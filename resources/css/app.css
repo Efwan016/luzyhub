@@ -1,3 +1,24 @@
+@import './input.css';
+@import './button.css';
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.flex
+
+
+.flex::before, 
+.flex::after {
+    display: none !important;
+}
+
+@layer components {
+    input:where([type='text']), input:where(:not([type])), input:where([type='email']), input:where([type='url']), input:where([type='password']), input:where([type='number']), input:where([type='date']), input:where([type='datetime-local']), input:where([type='month']), input:where([type='search']), input:where([type='tel']), input:where([type='time']), input:where([type='week']), select:where([multiple]), textarea, select {
+        border-color: transparent;
+    }
+
+    input:where([type='text']):focus, input:where(:not([type])):focus, input:where([type='email']):focus, input:where([type='url']):focus, input:where([type='password']):focus, input:where([type='number']):focus, input:where([type='date']):focus, input:where([type='datetime-local']):focus, input:where([type='month']):focus, input:where([type='search']):focus, input:where([type='tel']):focus, input:where([type='time']):focus, input:where([type='week']):focus, select:where([multiple]):focus, textarea:focus, select:focus{
+        border-color:transparent;
+        --tw-ring-color: transparent;
+    }
+}

@@ -1,0 +1,26 @@
+
+    .btn-primary {
+        @apply bg-alerange text-white;
+    }
+
+    .btn-warning {
+        @apply bg-yellow-500 text-white;
+    }
+
+    .btn-danger {
+        @apply bg-red-500 text-white;
+    }
+
+    .btn-light-outline {
+        @apply text-white border border-white;
+    }
+
+    .btn-white-outline {
+        @apply text-black border border-[#f1f1f1];
+    }
+    .btn-google-light {
+        @apply w-full py-3 bg-white rounded-2xl text-white font-semibold;
+    }
+    .btn-wallet-web3 {
+        @apply w-full py-3 bg-purple-600 rounded-2xl text-white font-semibold;
+    }
