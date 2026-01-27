@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { Head, Link } from "@inertiajs/react";
 import TextInput from "@/Components/TextInput";
 import InputLabel from "@/Components/InputLabel";
 import PrimaryButton from "@/Components/PrimaryButton";
 
 export default function Login() {
-    const [account, setAccount] = useState(null);
-    const [showWalletModal, setShowWalletModal] = useState(false);
+    
     const [loadingWallet, setLoadingWallet] = useState(false);
 
     const connectWallet = async () => {
@@ -130,6 +130,9 @@ Nonce: ${data.nonce}`;
 
 
     return (
+       <>
+       <Head title="Login" />
+
         <div className="h-screen bg-[#050505] text-white flex font-sans selection:bg-indigo-500 selection:text-white overflow-hidden">
             {/* Decorative Background Elements */}
             <div className="fixed inset-0 z-0 pointer-events-none">
@@ -205,7 +208,7 @@ Nonce: ${data.nonce}`;
                                 <PrimaryButton
                                     type="button"
                                     variant="google-light"
-                                    className="w-full justify-center !rounded-xl !py-3 bg-white hover:bg-gray-100 transition-colors"
+                                    className="w-full justify-center !rounded-xl !py-3 bg-white hover:bg-purple-500 transition-colors"
                                 >
                                     <span className="text-sm font-medium text-black justify-center flex items-center gap-2" onClick={() => window.location.href = "/auth/google"}>
                                         <svg className="w-5 h-5" viewBox="0 0 24 24">
@@ -223,8 +226,8 @@ Nonce: ${data.nonce}`;
                                     variant="wallet-web3"
                                     disabled={loadingWallet}
                                     className={`w-full justify-center !rounded-xl !py-3 bg-[#1A1A1A] border border-gray-800 transition-all
-        ${loadingWallet ? "opacity-60 cursor-not-allowed" : "hover:border-indigo-500/50 hover:bg-[#222]"}
-    `}
+                                    ${loadingWallet ? "opacity-60 cursor-not-allowed" : "hover:border-indigo-500/50 hover:bg-[#222]"}
+    `                               }
                                 >
                                     <span
                                         className="text-sm font-medium text-white flex justify-center items-center gap-2"
@@ -240,14 +243,17 @@ Nonce: ${data.nonce}`;
                             </div>
 
                             <div className="pt-4">
-                                <PrimaryButton type="button" variant="light-outline" className="w-full justify-center !rounded-xl !py-3 border-gray-700 hover:border-gray-500 text-gray-300 hover:text-white transition-colors">
-                                    <span className="text-sm font-medium">Create New Account</span>
-                                </PrimaryButton>
+                                <Link href="/prototype/register">
+                                    <PrimaryButton type="button" variant="light-outline" className="w-full justify-center !rounded-xl !py-3 border-gray-700 hover:bg-gray-500 hover:border-gray-500 text-gray-300 hover:text-white transition-colors">
+                                        <span className="text-sm font-medium">Create New Account</span>
+                                    </PrimaryButton>
+                                </Link>
                             </div>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
+       </>
     );
 };
