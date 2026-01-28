@@ -11,14 +11,23 @@ return new class extends Migration
      *
      * @return void
      */
-    public function up()
-    {
-        Schema::table('users', function (Blueprint $table) {
-    $table->string('wallet_address')->nullable()->unique();
-    $table->string('wallet_nonce')->nullable();
-});
+   public function up(): void
+{
+    Schema::table('users', function (Blueprint $table) {
+        if (!Schema::hasColumn('users', 'wallet_address')) {
+            $table->string('wallet_address')->nullable()->unique();
+        }
 
-    }
+        if (!Schema::hasColumn('users', 'wallet_nonce')) {
+            $table->string('wallet_nonce')->nullable();
+        }
+
+        if (!Schema::hasColumn('users', 'wallet_chain')) {
+            $table->string('wallet_chain')->nullable();
+        }
+    });
+}
+
 
     /**
      * Reverse the migrations.

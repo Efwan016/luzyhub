@@ -8,13 +8,11 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
    public function up()
 {
     Schema::table('users', function (Blueprint $table) {
-        $table->string('wallet_address')->nullable()->unique()->after('email');
+        $table->string('wallet_address')->nullable()->unique()->after('avatar');
         $table->string('wallet_chain')->nullable()->after('wallet_address');
         $table->string('wallet_nonce')->nullable()->after('wallet_chain');
     });

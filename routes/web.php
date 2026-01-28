@@ -1,15 +1,18 @@
 <?php
 
-use App\Http\Controllers\Auth\WalletAuthController;
+use App\Http\Controllers\Auth\GoogleAuthController;
+
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-use Laravel\Socialite\Facades\Socialite;
+
 use App\Models\User;
 use Elliptic\EC;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use kornrunner\Keccak;
+
+
 
 // Redirect base URL ke login prototype
 Route::redirect('/', '/prototype/login', 200);
@@ -35,34 +38,8 @@ Route::prefix('prototype')->group(function () {
 | Google Login
 |--------------------------------------------------------------------------
 */
-Route::get('/auth/google', function () {
-    return Socialite::driver('google')->redirect();
-});
-
-Route::get('/auth/google/callback', function () {
-    try {
-        /** @var \Laravel\Socialite\Two\AbstractProvider $driver */
-        $driver = Socialite::driver('google');
-        $googleUser = $driver->stateless()->user();
-    } catch (\Exception $e) {
-        return redirect()->route('prototype.login');
-    }
-
-    $user = User::updateOrCreate(
-        ['email' => $googleUser->getEmail()],
-        [
-            'name' => $googleUser->getName(),
-            'google_id' => $googleUser->getId(),
-            'avatar' => $googleUser->getAvatar(),
-            'password' => bcrypt(Str::random(32)),
-            'email_verified_at' => now(),
-        ]
-    );
-
-    Auth::login($user);
-
-    return redirect()->route('dashboard');
-});
+Route::get('/auth/google', [GoogleAuthController::class, 'redirect']);
+Route::get('/auth/google/callback', [GoogleAuthController::class, 'callback']);
 
 /*
 |--------------------------------------------------------------------------
@@ -72,10 +49,23 @@ Route::get('/auth/google/callback', function () {
 Route::post('/auth/wallet/nonce', function (Request $request) {
     $address = strtolower($request->address);
 
-    $user = User::firstOrCreate(
-        ['wallet_address' => $address],
-        ['wallet_nonce' => Str::random(32)]
-    );
+    $user = User::where('wallet_address', $address)->first();
+
+if (!$user) {
+    $user = User::create([
+        'wallet_address' => $address,
+        'wallet_chain' => $request->chain,
+        'wallet_nonce' => Str::random(32),
+        'name' => 'Wallet User',
+        'password' => bcrypt(Str::random(32)),
+    ]);
+
+    $user->assignRole('User');
+} else {
+    $user->wallet_nonce = Str::random(32);
+    $user->save();
+}
+
 
     return response()->json(['nonce' => $user->wallet_nonce]);
 });
@@ -108,8 +98,10 @@ Route::post('/auth/wallet/verify', function (Request $request) {
     Auth::login($user);
     return response()->json(['success' => true]);
 });
-Route::post('/auth/wallet/nonce', [WalletAuthController::class, 'nonce']);
-Route::post('/auth/wallet/verify', [WalletAuthController::class, 'verify']);
+
+// HAPUS ATAU KOMENTARI BARIS INI KARENA MENIMPA LOGIKA DI ATAS
+// Route::post('/auth/wallet/nonce', [WalletAuthController::class, 'nonce']);
+// Route::post('/auth/wallet/verify', [WalletAuthController::class, 'verify']);
 
 // Auth scaffolding
 require __DIR__ . '/auth.php';
