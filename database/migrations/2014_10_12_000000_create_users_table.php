@@ -11,23 +11,27 @@ return new class extends Migration
      *
      * @return void
      */
-   public function up()
-{
-    Schema::table('users', function (Blueprint $table) {
-        $table->string('wallet_address')->nullable()->unique()->after('email');
-        $table->string('wallet_chain')->nullable()->after('wallet_address');
-        $table->string('wallet_nonce')->nullable()->after('wallet_chain');
-    });
-}
+    public function up()
+    {
+        Schema::create('users', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->string('email')->unique()->nullable();
+            $table->timestamp('email_verified_at')->nullable();
+            $table->string('password')->nullable();
+            $table->rememberToken();
+            $table->timestamps();
+        });
+    }
 
-public function down()
-{
-    Schema::table('users', function (Blueprint $table) {
-        $table->dropColumn([
-            'wallet_address',
-            'wallet_chain',
-            'wallet_nonce',
-        ]);
-    });
-}
+    public function down()
+    {
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn([
+                'wallet_address',
+                'wallet_chain',
+                'wallet_nonce',
+            ]);
+        });
+    }
 };

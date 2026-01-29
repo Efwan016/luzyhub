@@ -35,45 +35,56 @@ class WalletAuthController extends Controller
     }
 
     // 2️⃣ verify signature
-    public function verify(Request $request)
-    {
-        $request->validate([
-            'address'   => 'required|string',
-            'signature' => 'required|string',
-            'chain'     => 'required|in:evm',
-        ]);
+   public function verify(Request $request)
+{
+    logger()->info('Wallet verify called', $request->all());
+    $request->validate([
+        'address'   => 'required|string',
+        'signature' => 'required|string',
+        'chain'     => 'required|in:evm',
+        'message'   => 'required|string',
+    ]);
 
-        $address = strtolower($request->address);
-        $nonce   = Cache::get('wallet_nonce_' . $address);
+    $address = strtolower($request->address);
+    $nonce   = Cache::get('wallet_nonce_' . $address);
 
-        if (!$nonce) {
-            return response()->json(['message' => 'Nonce expired'], 401);
-        }
-
-        $message = "LuzyHub Login\nWallet: {$address}\nNonce: {$nonce}";
-
-        if (!$this->verifyEvmSignature($message, $request->signature, $address)) {
-            return response()->json(['message' => 'Invalid signature'], 401);
-        }
-
-        // create / login user
-        $user = User::firstOrCreate(
-            ['wallet_address' => $address],
-            [
-                'name' => 'Wallet User',
-                'email' => $address . '@wallet.local',
-                'password' => bcrypt(Str::random(32)),
-            ]
-        );
-
-        Auth::login($user);
-
-        Cache::forget('wallet_nonce_' . $address);
-
-        return response()->json([
-            'success' => true
-        ]);
+    if (!$nonce) {
+        return response()->json(['message' => 'Nonce expired'], 401);
     }
+
+    // 🔐 VALIDASI NONCE ADA DI MESSAGE
+    if (!str_contains($request->message, $nonce)) {
+        return response()->json(['message' => 'Invalid nonce'], 401);
+    }
+
+    if (!$this->verifyEvmSignature(
+        $request->message,
+        $request->signature,
+        $address
+    )) {
+        return response()->json(['message' => 'Invalid signature'], 401);
+    }
+
+    $user = User::firstOrCreate(
+        ['wallet_address' => $address],
+        [
+            'name' => 'Wallet User',
+            'email' => $address . '@wallet.local',
+            'password' => bcrypt(Str::random(32)),
+            'role' => 'user',
+            'wallet_address' => $address,
+            'email_verified_at' => now(),
+        ]
+    );
+
+    Auth::login($user);
+    Cache::forget('wallet_nonce_' . $address);
+
+    return response()->json([
+    'redirect' => '/prototype/dashboard'
+]);
+}
+
 
     // 3️⃣ verify EVM signature
     private function verifyEvmSignature($message, $signature, $address)

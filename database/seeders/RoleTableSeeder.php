@@ -2,20 +2,24 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
+use Spatie\Permission\PermissionRegistrar;
 
 class RoleTableSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
     public function run()
     {
-        Role::create(['name' => 'Admin']);
-        Role::create(['name' => 'User']);
+        app()[PermissionRegistrar::class]->forgetCachedPermissions();
+
+        Role::firstOrCreate([
+            'name' => 'admin',
+            'guard_name' => 'web',
+        ]);
+
+        Role::firstOrCreate([
+            'name' => 'user',
+            'guard_name' => 'web',
+        ]);
     }
 }

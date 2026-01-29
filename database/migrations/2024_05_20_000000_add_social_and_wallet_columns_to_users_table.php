@@ -12,20 +12,16 @@ return new class extends Migration
    public function up()
 {
     Schema::table('users', function (Blueprint $table) {
-        $table->string('wallet_address')->nullable()->unique()->after('avatar');
-        $table->string('wallet_chain')->nullable()->after('wallet_address');
-        $table->string('wallet_nonce')->nullable()->after('wallet_chain');
+        $table->string('wallet_address')->nullable()->unique();
+        $table->string('wallet_chain')->nullable();
     });
 }
 
 public function down()
 {
     Schema::table('users', function (Blueprint $table) {
-        $table->dropColumn([
-            'wallet_address',
-            'wallet_chain',
-            'wallet_nonce',
-        ]);
+        $table->dropColumn(['wallet_address', 'wallet_chain']);
     });
 }
+
 };
