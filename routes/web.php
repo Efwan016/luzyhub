@@ -28,14 +28,18 @@ Route::prefix('prototype')->group(function () {
 
     Route::get('/dashboard', function () {
         return Inertia::render('Prototype/Dashboard');
-    })->middleware(['auth', 'verified'])->name('prototype.dashboard');
+    })->middleware(['auth', 'verified'])->name('Prototype.dashboard');
+
+     Route::get('/subscriptionPlan', function () {
+        return Inertia::render('Prototype/SubscriptionPlan');
+    })->middleware(['auth', 'verified'])->name('Prototype.subscriptionPlan');
 });
 
 
 /*
 |--------------------------------------------------------------------------
 | Google Login
-|--------------------------------------------------------------------------
+|-------------------------------------------------------------------------- 
 */
 Route::get('/auth/google', [GoogleAuthController::class, 'redirect']);
 Route::get('/auth/google/callback', [GoogleAuthController::class, 'callback']);
