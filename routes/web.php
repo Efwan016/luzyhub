@@ -5,41 +5,60 @@ use App\Http\Controllers\Auth\WalletAuthController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-
-
-
-// Redirect base URL ke login prototype
+/*
+|--------------------------------------------------------------------------
+| Redirect base
+|--------------------------------------------------------------------------
+*/
 Route::redirect('/', '/prototype/login', 200);
 
-// Dashboard (protected)
+/*
+|--------------------------------------------------------------------------
+| Dashboard default
+|--------------------------------------------------------------------------
+*/
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-// Prototype routes
-Route::prefix('prototype')->group(function () {
+/*
+|--------------------------------------------------------------------------
+| Prototype Routes
+|--------------------------------------------------------------------------
+*/
+Route::prefix('prototype')->middleware(['auth', 'verified'])->group(function () {
+
     Route::get('/login', function () {
         return Inertia::render('Prototype/Login');
-    })->name('prototype.login');
+    })->withoutMiddleware(['auth', 'verified'])->name('prototype.login');
 
     Route::get('/register', function () {
         return Inertia::render('Prototype/Register');
-    })->name('prototype.register');
+    })->withoutMiddleware(['auth', 'verified'])->name('prototype.register');
 
     Route::get('/dashboard', function () {
         return Inertia::render('Prototype/Dashboard');
-    })->middleware(['auth', 'verified'])->name('Prototype.dashboard');
+    })->name('Prototype.dashboard');
 
-     Route::get('/subscriptionPlan', function () {
+    Route::get('/subscriptionPlan', function () {
         return Inertia::render('Prototype/SubscriptionPlan');
-    })->middleware(['auth', 'verified'])->name('Prototype.subscriptionPlan');
-});
+    })->name('Prototype.subscriptionPlan');
 
+    /**
+     * ✅ MOVIE DETAIL
+     * hanya kirim ID ke React
+     */
+    Route::get('/movie', function () {
+        return Inertia::render('Prototype/Movie/MovieDetail', [
+            'movieId' => request('path') ?? request('slug')
+        ]);
+    })->name('Prototype.movie.detail');
+});
 
 /*
 |--------------------------------------------------------------------------
 | Google Login
-|-------------------------------------------------------------------------- 
+|--------------------------------------------------------------------------
 */
 Route::get('/auth/google', [GoogleAuthController::class, 'redirect']);
 Route::get('/auth/google/callback', [GoogleAuthController::class, 'callback']);

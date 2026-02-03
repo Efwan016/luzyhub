@@ -1,3 +1,4 @@
+import { Link } from "@inertiajs/react";
 import PropTypes from "prop-types";
 
 export default function FeaturedMovie({
@@ -31,12 +32,14 @@ export default function FeaturedMovie({
                     <div className="font-medium text-[22px] text-white">{name}</div>
                     <p className="text-white text-sm font-light">{category}</p>
                 </div>
-                <div className="translate-x-[100px] group-hover:translate-x-0 transition duration-500">
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 group-hover:-translate-y-1/2 transition ease-in-out duration-500">
                     <img src="/icons/ic_play.svg" width="50" alt="" />
                 </div>
             </div>
 
-            <a href={slug} className="absolute inset-0 z-50"></a>
+            <Link href={`/prototype/movie/${slug}`}
+                className="absolute inset-0 z-50">
+            </Link>
         </div>
     );
 }

@@ -17,7 +17,7 @@ export default function PrimaryButton({ type = 'submit', className = '', variant
             type={type}
             className={`rounded-md py-[13px] text-center
                 ${
-                processing && "opacity-30 cursor-not-allowed" } 
+                processing ? "opacity-30 cursor-not-allowed" : "" } 
                 ${variants[variant]} ${className}`}
             disabled={processing}
         >

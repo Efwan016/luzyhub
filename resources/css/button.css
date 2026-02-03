@@ -1,6 +1,6 @@
 
     .btn-primary {
-        @apply bg-alerange text-white;
+        @apply bg-alerange text-white rounded-full text-center block hover:bg-alerange/90 transition-all duration-300 shadow-lg shadow-alerange/25 font-semibold;
     }
 
     .btn-warning {
@@ -16,7 +16,7 @@
     }
 
     .btn-white-outline {
-        @apply text-black border border-[#f1f1f1];
+        @apply rounded-full border border-[#333] py-3 text-center block hover:bg-white hover:text-black transition-all duration-300 font-medium;
     }
     .btn-google-light {
         @apply w-full py-3 bg-white rounded-2xl text-white font-semibold ;

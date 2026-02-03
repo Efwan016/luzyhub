@@ -1,13 +1,10 @@
-// resources/js/services/api.js
+import axios from 'axios';
 
 const BASE_URL = '/api';
 
 const fetchJson = async (url) => {
-  const res = await fetch(url);
-  if (!res.ok) {
-    throw new Error('API error');
-  }
-  return res.json();
+  const { data } = await axios.get(url);
+  return data;
 };
 
 export const api = {
@@ -16,4 +13,7 @@ export const api = {
 
   search: (q) =>
     fetchJson(`${BASE_URL}/search?q=${encodeURIComponent(q)}`),
+
+  getMovieDetail: (path) =>
+    fetchJson(`${BASE_URL}/movie?path=${encodeURIComponent(path)}`),
 };

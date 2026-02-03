@@ -14,7 +14,7 @@ export default function Sidebar({ isSidebarOpen, isDesktopSidebarOpen = true }) 
                     { /* Menu */}
                     <div>
                         <div className="text-gray-500 text-xs font-medium mb-6 uppercase tracking-wider">Menu</div>
-                        <a href="/" className="flex items-center gap-4 text-white font-semibold mb-8 border-r-2 border-alerange pr-5 transition-all">
+                        <a href="/prototype/dashboard" className="flex items-center gap-4 text-white font-semibold mb-8 border-r-2 border-alerange pr-5 transition-all">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"
                                 xmlns="http://www.w3.org/2000/svg">
                                 <g id="Iconly/Bulk/Home">

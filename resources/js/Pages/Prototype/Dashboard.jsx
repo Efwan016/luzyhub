@@ -1,6 +1,6 @@
 import MoviesCard from "@/Components/MoviesCard";
-import Autenticaated from "@/Layouts/Autenticated/Index";
-import { Head } from "@inertiajs/react";
+import Authenticated from "@/Layouts/Autenticated/Index";
+import { Head, Link } from "@inertiajs/react";
 import { useEffect, useState } from "react";
 import { api } from "@/Services/api";
 
@@ -31,85 +31,87 @@ export default function Dashboard() {
     }, []);
 
     return (
-      <Autenticaated>
-    <Head title="Dashboard" />
+        <Authenticated>
+            <Head title="Dashboard" />
 
-    {/* Featured Movies */}
-    {featured.length > 0 && (
-        <div className="relative w-full h-[60vh] min-h-[400px] max-h-[600px] overflow-hidden mb-10">
-            {featured.map((movie, index) => (
-                <div
-                    key={movie.id}
-                    className={`absolute inset-0 bg-cover bg-center transition-opacity duration-1000
+            {/* Featured Movies */}
+            {featured.length > 0 && (
+                <div className="relative w-full h-[60vh] min-h-[400px] max-h-[600px] overflow-hidden mb-10">
+                    {featured.map((movie, index) => (
+                        <div
+                            key={movie.id}
+                            className={`absolute inset-0 bg-cover bg-center transition-opacity duration-1000
                         ${index === currentIndex ? 'opacity-100 z-20' : 'opacity-0 z-10'}`}
-                    style={{ backgroundImage: `url(${movie.poster})` }}
-                >
-                    <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/50 to-transparent flex items-center">
-                        <div className="w-full md:w-1/2 px-6 md:px-16 text-white">
-                            <h1 className="text-3xl md:text-5xl font-extrabold mb-3">
-                                {movie.title}
-                            </h1>
+                            style={{ backgroundImage: `url(${movie.poster})` }}
+                        >
+                            <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/50 to-transparent flex items-center">
+                                <div className="w-full md:w-1/2 px-6 md:px-16 text-white">
+                                    <h1 className="text-3xl md:text-5xl font-extrabold mb-3">
+                                        {movie.title}
+                                    </h1>
 
-                            <div className="flex gap-4 text-gray-300 mb-6">
-                                <span className="flex items-center gap-1 text-yellow-400 font-semibold">
-                                    ⭐ {(Number(movie.rating) || 0).toFixed(1)}
-                                </span>
-                                <span>{movie.year ?? "2024"}</span>
-                                <span>{movie.category ?? movie.categories ?? "Movie"}</span>
+                                    <div className="flex gap-4 text-gray-300 mb-6">
+                                        <span className="flex items-center gap-1 text-yellow-400 font-semibold">
+                                            ⭐ {(Number(movie.rating) || 0).toFixed(1)}
+                                        </span>
+                                        <span>{movie.year ?? "2024"}</span>
+                                        <span>{movie.genre ?? movie.category ?? movie.categories ?? "Movie"}</span>
+                                    </div>
+
+                                    <Link
+                                        href={`/prototype/movie?path=${encodeURIComponent(movie.detailPath)}`}
+                                        className="inline-flex items-center gap-2 bg-red-600 hover:bg-red-700 px-6 py-3 rounded-lg font-semibold"
+                                    >
+                                        ▶ Watch Now
+                                    </Link>
+
+                                </div>
                             </div>
-
-                            <a
-                                href={`/movies/${movie.id}`}
-                                className="inline-flex items-center gap-2 bg-red-600 hover:bg-red-700 px-6 py-3 rounded-lg font-semibold"
-                            >
-                                ▶ Watch Now
-                            </a>
                         </div>
-                    </div>
+                    ))}
+
+                    {/* NAV */}
+                    <button
+                        onClick={() =>
+                            setCurrentIndex(
+                                (currentIndex - 1 + featured.length) % featured.length
+                            )
+                        }
+                        className="absolute left-5 top-1/2 -translate-y-1/2 z-30 w-10 h-10 rounded-full bg-black/50 hover:bg-white hover:text-black transition"
+                    >
+                        ‹
+                    </button>
+
+                    <button
+                        onClick={() =>
+                            setCurrentIndex((currentIndex + 1) % featured.length)
+                        }
+                        className="absolute right-5 top-1/2 -translate-y-1/2 z-30 w-10 h-10 rounded-full bg-black/50 hover:bg-white hover:text-black transition"
+                    >
+                        ›
+                    </button>
                 </div>
-            ))}
+            )}
 
-            {/* NAV */}
-            <button
-                onClick={() =>
-                    setCurrentIndex(
-                        (currentIndex - 1 + featured.length) % featured.length
-                    )
-                }
-                className="absolute left-5 top-1/2 -translate-y-1/2 z-30 w-10 h-10 rounded-full bg-black/50 hover:bg-white hover:text-black transition"
-            >
-                ‹
-            </button>
+            {/* Browse */}
+            <div className="mt-[50px] container mx-auto">
+                <div className="font-semibold text-[22px] text-white mb-4">Browse</div>
 
-            <button
-                onClick={() =>
-                    setCurrentIndex((currentIndex + 1) % featured.length)
-                }
-                className="absolute right-5 top-1/2 -translate-y-1/2 z-30 w-10 h-10 rounded-full bg-black/50 hover:bg-white hover:text-black transition"
-            >
-                ›
-            </button>
-        </div>
-    )}
+                <div className="grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-6">
+                    {browse.map((movie, i) => (
+                        <MoviesCard
+                            key={i}
+                            slug={movie.detailPath}
+                            name={movie.title}
+                            year={movie.year}
+                            category={movie.genre ?? movie.category ?? movie.categories ?? "Movie"}
+                            thumbnail={movie.poster}
+                        />
 
-    {/* Browse */}
-    <div className="mt-[50px] container mx-auto">
-        <div className="font-semibold text-[22px] text-white mb-4">Browse</div>
-
-        <div className="grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-6">
-            {browse.map((movie, i) => (
-                <MoviesCard
-                    key={i}
-                    slug={`/movies/${movie.slug ?? movie.id}`}
-                    name={movie.title ?? movie.name}
-                    year={movie.year ?? movie.release_date}
-                    category={movie.category ?? movie.categories ?? "Series Movie"}
-                    thumbnail={movie.poster}
-                />
-            ))}
-        </div>
-    </div>
-</Autenticaated>
+                    ))}
+                </div>
+            </div>
+        </Authenticated>
 
     );
 }
