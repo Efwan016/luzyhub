@@ -25,6 +25,7 @@ class DatabaseSeeder extends Seeder
             RoleTableSeeder::class,
             UserTableSeeder::class,
             SubscriptionPlanTableSeeder::class,
+            MovieTableSeeder::class,
         ]);
     }
 }
