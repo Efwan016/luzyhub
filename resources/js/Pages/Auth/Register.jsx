@@ -132,7 +132,7 @@ export default function Register() {
             message,
         });
     
-        window.location.href = '/dashboard';
+        window.location.href = '/prototype/dashboard';
     };
     
     
