@@ -4,6 +4,7 @@ import { Head, Link, useForm } from "@inertiajs/react";
 import PrimaryButton from "@/Components/PrimaryButton";
 import TextInput from "@/Components/TextInput";
 import InputLabel from "@/Components/InputLabel";
+import InputError from "@/Components/InputError";
 
 export default function Register() {
     
@@ -26,30 +27,8 @@ export default function Register() {
     
         const submit = (e) => {
             e.preventDefault();
-             console.log(data);
             post(route('register'));
         };
-    
-    const handleRegister = (e) => {
-        e.preventDefault();
-        const formData = new FormData(e.target);
-        const name = formData.get("fullname");
-        const email = formData.get("email");
-        const password = formData.get("password");
-
-        axios.post('/register', {
-            name,
-            email,
-            password,
-            password_confirmation: password, // Breeze requires password confirmation
-        }).then(() => {
-            window.location.href = '/dashboard';
-        }).catch(error => {
-            console.error("Registration error:", error.response.data);
-            const errors = Object.values(error.response.data.errors).flat().join("\n");
-            alert(`Registration failed:\n${errors}`);
-        });
-    };
 
        
         const [loadingWallet, setLoadingWallet] = useState(false);
@@ -150,6 +129,7 @@ export default function Register() {
             address,
             signature,
             chain,
+            message,
         });
     
         window.location.href = '/dashboard';
@@ -171,7 +151,7 @@ export default function Register() {
             </div>
             <div className="py-24 flex laptopLg:ml-[680px] laptopXl:ml-[870px]">
                 <div>
-                    <img src="/images/luzyhub.svg" alt="Luzyhub Logo" />
+                    <img src="/images/luzyhub-white.svg" alt="Luzyhub Logo" />
                     <div className="my-[70px]">
                         <div className="font-semibold text-[26px] mb-3">
                             Sign Up
@@ -180,16 +160,15 @@ export default function Register() {
                             Explore our new movies and get <br />
                             the better insight for your life
                         </p>
-                        <validationErrors error={errors} />
                     </div>
                     <form className="w-[370px]" onSubmit={submit}>
                         <div className="flex flex-col gap-6">
                             <div>
-                                <InputLabel forInput="fullname" value="Full Name" className="text-base block mb-2" />
+                                <InputLabel forInput="name" value="Full Name" className="text-base block mb-2" />
                                 <TextInput
                                     type="text"
-                                    name="fullname"
-                                    id="fullname"
+                                    name="name"
+                                    id="name"
                                     value={data.name}
                                     className="rounded-2xl bg-form-bg py-[13px] px-7 w-full focus:outline-none focus:ring-1 focus:ring-alerange"
                                     placeholder="Your fullname..."
@@ -197,6 +176,7 @@ export default function Register() {
                                     onChange={handleOnChange}
                                     required 
                                 />
+                                <InputError message={errors.name} className="mt-2" />
                             </div>
                             <div>
                                 <InputLabel forInput="email" value="Email Address" className="text-base block mb-2" />
@@ -210,6 +190,7 @@ export default function Register() {
                                     onChange={handleOnChange}
                                     required
                                 />
+                                <InputError message={errors.email} className="mt-2" />
                             </div>
                             <div>
                                 <InputLabel forInput="password" value="Password" className="text-base block mb-2" />
@@ -223,6 +204,7 @@ export default function Register() {
                                     onChange={handleOnChange}
                                     required
                                 />
+                                <InputError message={errors.password} className="mt-2" />
                             </div>
                              <div>
                                 <InputLabel forInput="password_confirmation" value="Confirm Password" className="text-base block mb-2" />
@@ -236,6 +218,7 @@ export default function Register() {
                                     onChange={handleOnChange}
                                     required
                                 />
+                                <InputError message={errors.password_confirmation} className="mt-2" />
                             </div>
                         </div>
                         <div className="grid space-y-[14px] mt-[30px]">

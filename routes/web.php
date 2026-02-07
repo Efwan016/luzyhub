@@ -68,7 +68,9 @@ Route::get('/auth/google/callback', [GoogleAuthController::class, 'callback']);
 | Wallet / Web3 Login
 |--------------------------------------------------------------------------
 */
-Route::post('/wallet/nonce', [WalletAuthController::class, 'nonce']);
-Route::post('/wallet/verify', [WalletAuthController::class, 'verify']);
+Route::prefix('auth/wallet')->group(function () {
+    Route::post('/nonce', [WalletAuthController::class, 'nonce']);
+    Route::post('/verify', [WalletAuthController::class, 'verify']);
+});
 
 require __DIR__ . '/auth.php';
