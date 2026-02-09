@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { usePage } from "@inertiajs/react";
+import { Link, usePage } from "@inertiajs/react";
 import { router } from '@inertiajs/react';
 
 export default function TopBar({ toggleSidebar }) {
@@ -53,13 +53,14 @@ export default function TopBar({ toggleSidebar }) {
                         </div>
                         <a href="/profile" className="transition-all hover:bg-[#262626] p-4 text-sm text-gray-300 hover:text-white flex items-center gap-3">Profile</a>
                         <a href="/settings" className="transition-all hover:bg-[#262626] p-4 text-sm text-gray-300 hover:text-white flex items-center gap-3">Settings</a>
-                        <a
-                            href="#!"
+                        <Link
+                            href={route('logout')}
+                            method="post"
                             onClick={handleLogout}
                             className="transition-all hover:bg-[#262626] p-4 text-sm text-red-500 hover:text-red-400 flex items-center gap-3"
                         >
                             Sign Out
-                        </a>
+                        </Link>
                     </div>
                 </div>
             </div>

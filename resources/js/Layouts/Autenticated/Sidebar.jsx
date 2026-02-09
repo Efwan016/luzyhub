@@ -6,7 +6,7 @@ export default function Sidebar({ isSidebarOpen, isDesktopSidebarOpen = true }) 
         <aside className={`fixed z-50 w-[300px] h-full bg-[#0a0a0a] border-r border-[#1F1F1F] transition-transform duration-300 ease-in-out ${isDesktopSidebarOpen ? 'lg:translate-x-0' : 'lg:-translate-x-full'} ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
 
             <div className="flex flex-col p-[30px] pr-0 overflow-y-auto h-full [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-                <a href="/prototype/dashboard" className="logo mb-10 items-center flex gap-4 justify-center pr-[30px]">
+                <a href="/dashboard" className="logo mb-10 items-center flex gap-4 justify-center pr-[30px]">
                     <img src="/images/luzyhub-white.svg" alt="LuzyHub" />
                 </a>
                 <div className="links flex flex-col mt-[60px] h-full gap-[50px]">
@@ -14,7 +14,7 @@ export default function Sidebar({ isSidebarOpen, isDesktopSidebarOpen = true }) 
                     { /* Menu */}
                     <div>
                         <div className="text-gray-500 text-xs font-medium mb-6 uppercase tracking-wider">Menu</div>
-                        <a href="/prototype/dashboard" className="flex items-center gap-4 text-white font-semibold mb-8 border-r-2 border-alerange pr-5 transition-all">
+                        <a href="/" className="flex items-center gap-4 text-white font-semibold mb-8 border-r-2 border-alerange pr-5 transition-all">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"
                                 xmlns="http://www.w3.org/2000/svg">
                                 <g id="Iconly/Bulk/Home">

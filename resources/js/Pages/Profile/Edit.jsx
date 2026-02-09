@@ -90,6 +90,9 @@ export default function Profile() {
                             type="submit"
                             processing={processing}
                             className="px-5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 transition-all"
+                            Loading="Updating..."
+                            Success="Updated!"
+                            href="/"
                         >
                             Save Changes
                         </PrimaryButton>

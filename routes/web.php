@@ -21,7 +21,7 @@ Route::redirect('/', '/prototype/login', 200);
 */
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/', function () {
-        return Inertia::render('Dashboard');
+        return Inertia::render('User/Dashboard/Index');
     })->name('dashboard');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
