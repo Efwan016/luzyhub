@@ -132,7 +132,7 @@ export default function Register() {
             message,
         });
     
-        window.location.href = '/prototype/dashboard';
+        window.location.href = '/dashboard';
     };
     
     
@@ -170,6 +170,7 @@ export default function Register() {
                                     name="name"
                                     id="name"
                                     value={data.name}
+                                    autoComplete="username"
                                     className="rounded-2xl bg-form-bg py-[13px] px-7 w-full focus:outline-none focus:ring-1 focus:ring-alerange"
                                     placeholder="Your fullname..."
                                    isFocused={true}
@@ -264,7 +265,7 @@ export default function Register() {
                                     </span>
                                 </PrimaryButton>
                             </div>
-                            <Link href="/prototype/login">
+                            <Link href="/login">
                                 <PrimaryButton type="button" variant="light-outline" className="rounded-2xl text-center w-full justify-center">
                                     <span className="text-base text-white">Sign In to My Account</span>
                                 </PrimaryButton>

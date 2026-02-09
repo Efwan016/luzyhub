@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\GoogleAuthController;
 use App\Http\Controllers\Auth\WalletAuthController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -10,6 +11,7 @@ use Inertia\Inertia;
 | Redirect base
 |--------------------------------------------------------------------------
 */
+
 Route::redirect('/', '/prototype/login', 200);
 
 /*
@@ -17,6 +19,15 @@ Route::redirect('/', '/prototype/login', 200);
 | Dashboard default
 |--------------------------------------------------------------------------
 */
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/', function () {
+        return Inertia::render('Dashboard');
+    })->name('dashboard');
+
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+});
+
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');

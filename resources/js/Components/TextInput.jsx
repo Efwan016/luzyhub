@@ -5,7 +5,7 @@ const TextInput = forwardRef(function TextInput(
     {
         type = "text",
         name = "",
-        value = "",
+        value,
         className = "",
         autoComplete = "",
         required = false,
@@ -19,27 +19,27 @@ const TextInput = forwardRef(function TextInput(
     },
     ref
 ) {
-    const input = ref ?? useRef(null);
+    const inputRef = ref ?? useRef(null);
 
     useEffect(() => {
         if (isFocused) {
-            input.current?.focus();
+            inputRef.current?.focus();
         }
     }, [isFocused]);
+
+    // Tentukan handler yang digunakan
+    const changeHandler = handleChange || onChange || (() => {});
 
     return (
         <div className="flex flex-col items-start">
             <input
                 {...props}
-                ref={input}
+                ref={inputRef}
                 type={type}
                 name={name}
-                value={value}
+                value={value} // tetap controlled
+                onChange={changeHandler}
                 required={required}
-                onChange={(e) => {
-                    if (handleChange) return handleChange(e);
-                    if (onChange) return onChange(e);
-                }}
                 autoComplete={autoComplete}
                 placeholder={placeholder}
                 aria-invalid={isError ? "true" : "false"}
